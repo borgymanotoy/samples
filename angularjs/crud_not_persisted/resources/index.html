@@ -6,7 +6,7 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>Angular + REST API - CRUD</title>
 
-        <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 
         <style media="screen">
             tr>td:nth-of-type(5), tr>td:nth-of-type(6){
@@ -45,12 +45,12 @@
                         <td>{{user.email}}</td>
                         <td>{{user.contactNo}}</td>
                         <td>
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#editUser" ng-click="displayUserDetails(user.username)">
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#editUser" ng-click="displayUserDetails(user)">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </button>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUser" ng-click="displayUserDetails(user.username)">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUser" ng-click="displayUserDetails(user)">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </button>
                         </td>
@@ -168,10 +168,9 @@
         </div>
         <!-- End: Modal For Delete User -->
 
-        <script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
-        <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="../js/angular.min.js"></script>
-        <!-- <script type="text/javascript" src="../js/app.js"></script> -->
-        <script type="text/javascript" src="../js/appConsumeRestApi.js"></script>
+        <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/angular.min.js"></script>
+        <script type="text/javascript" src="js/appConsumeRestApi.js"></script>
     </body>
 </html>
