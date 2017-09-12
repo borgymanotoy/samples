@@ -1,0 +1,16 @@
+* You may try these using browser addons like POSTMAN, HttpRequester, etc.
+
+[REGISTER-USER]:
+
+POST Request:
+http://localhost:8080/api/registerUser
+
+JSON:
+{
+    'id': 69,
+    'username': 'mangkanor',
+    'firstname': 'Kanor',
+    'lastname': 'Pulgada',
+    'email': 'mangkanor@manyak.ph'
+    'contactNo':'(0918) 232-1444'
+}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Spring Boot: Currency Conversion</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href='../css/forms.css'>
+
+    <!-- Custom styles for this template -->
+    <style>
+      body {
+        padding-top: 54px;
+      }
+      @media (min-width: 992px) {
+        body {
+          padding-top: 56px;
+        }
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">Spring Boot RESTful Demo</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </nav>
+
+    <p />
+
+    <!-- Page Content -->
+    <div class="container">
+        <h3>Currency Converter (POST)</h3>
+        <div class="divContainer" align="left">
+            <p>
+                <label for="txtFromCurrency">From:</label>
+                <input type="text" id="txtFromCurrency" name="fromCurrency" class="form-control" placeholder="From Currency Code" title="Enter currency code (ex. USD, AUD, PHP)" />
+            </p>
+            <p>
+                <label for="txtToCurrency">To:</label>
+                <input type="text" id="txtToCurrency" name="toCurrency" class="form-control" placeholder="From Currency Code" title="Enter currency code (ex. USD, AUD, PHP)" />
+            </p>
+            <p>
+                <label for="txtSource">Amount</label>
+                <input type="text" id="txtSource" name="sourceAmount" class="form-control" placeholder="Enter valid amount" title="Enter valid amount (Number)" />
+            </p>
+            <p>
+                <label for="txtResult">Result</label>
+                <input type="text" id="txtResult" name="convertedAmount" class="form-control" placeholder="Enter valid amount" title="Enter valid amount (Number)" readonly="readonly" />
+            </p>
+            <p>
+                <button type="button" id="btnGetConversionRate" class="btn btn-primary">Get Conversion Rate</button>
+                <button type="button" id="btnConvertAmount" class="btn btn-secondary">Convert Amount</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper/popper.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../js/bootbox.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#btnConvertAmount').on('click', function(){
+              var my_url = "http://localhost:8080/api/convertCurrency";
+              var my_data = {
+                  fromCurrency: $('#txtFromCurrency').val(),
+                  toCurrency: $('#txtToCurrency').val(),
+                  sourceAmount: $('#txtSource').val(),
+              };
+
+              $.ajax({
+                  method: "POST",
+                  url: my_url,
+                  data: JSON.stringify(my_data),
+                  headers: {
+                      'content-type': "application/json",
+                      'cache-control': "no-cache"
+                  },
+              })
+              .done(function( result ) {
+                 $('#txtResult').val(result);
+              });
+            });
+
+            $('#btnGetConversionRate').on('click', function(){
+              var my_url = "http://localhost:8080/api/getCurrencyRate?fromCurrency=" + $('#txtFromCurrency').val() + "&toCurrency=" + $('#txtToCurrency').val();
+              $.ajax({
+                  method: "GET",
+                  url: my_url
+              })
+              .done(function( result ) {
+                 $('#txtResult').val(result);
+              });
+            });
+
+        });
+    </script>
+
+  </body>
+
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Spring Boot RESTful Demo</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href='../css/lists.css'>
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+
+    <!-- Custom styles for this template -->
+    <style>
+      body {
+        padding-top: 54px;
+      }
+      @media (min-width: 992px) {
+        body {
+          padding-top: 56px;
+        }
+      }
+
+      #divUserDetails {
+        display: none;
+        width: 500px;
+        padding: 20px;
+        border: 1px solid #ccc;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">Spring Boot RESTful Demo</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </nav>
+
+    <p />
+
+    <!-- Page Content -->
+    <div class="container">
+        <h2>RESTful Example: List Users (GET)</h2>
+        <p />
+        <div class="col-lg-12 text-center">
+          <table id="tblUsers" class="table table-hover">
+            <thead>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Firstname</th>
+              <th>Lastname</th>
+              <th>Email Address</th>
+              <th>Contact No.</th>
+              <th>Action</th>
+            </thead>
+            <tbody>
+              <tr>
+                  <td>123</td>
+                  <td>dummy_username</td>
+                  <td>Dummy Firstname</td>
+                  <td>Dummy Lastname</td>
+                  <td>email_sample@dummy.ph</td>
+                  <td>(0912) 123-4567</td>
+                  <td>
+                    <a href="javascript:void(0)" onclick="updateDetails();">Edit</a>&nbsp;<a href="javascript:void(0)" onclick="removeUser();">Remove</a>
+                  </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p />
+        <p>
+          <button type="button" id="btnNewUser" class="btn btn-primary">New User</button>
+        </p>
+    </div>
+
+
+
+
+    <div id="divUserDetails">
+        <h3>Register User (POST)</h3>
+        <div class="divContainer" align="left">
+            <input type="hidden" id="hdnUserId" value="" />
+            <p>
+                <label for="txtUserId">ID</label>
+                <input type="text" id="txtUserId" name="id" class="form-control" placeholder="User ID [0-9]" title="Enter user ID here" />
+            </p>
+            <p>
+                <label for="txtUsername">Username</label>
+                <input type="text" id="txtUsername" name="username" class="form-control" placeholder="Username [a-zA-Z0-9]" title="Enter username here" />
+            </p>
+            <p>
+                <label for="txtFirstname">First Name</label>
+                <input type="text" id="txtFirstname" name="firstname" class="form-control" placeholder="First Name [a-zA-Z]" title="Enter first name here" />
+            </p>
+            <p>
+                <label for="txtLastname">Last Name</label>
+                <input type="text" id="txtLastname" name="lastname" class="form-control" placeholder="Last Name [a-zA-Z]" title="Enter last name here" />
+            </p>
+            <p>
+                <label for="txtEmail">Email Address</label>
+                <input type="email" id="txtEmail" name="email" class="form-control" placeholder="Email Address (Valid Email Address)" title="Enter a valid email address here" />
+            </p>
+            <p>
+                <label for="txtContact">Contact Number</label>
+                <input type="text" id="txtContact" name="contactNo" class="form-control" placeholder="Ex. (0918) 232-1234, (082) 222-4211, (6382) 300-1933" title="Follow the formats of these examples (0918) 232-1234, (082) 222-4211, (6382) 300-1933" />
+            </p>
+            <p>
+                <button type="button" id="btnSaveUser" class="btn btn-primary">Save</button>
+                <button type="button" id="btnClearForm" class="btn btn-secondary">Clear</button>
+            </p>
+        </div>
+    </div>
+
+
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper/popper.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../js/bootbox.min.js"></script>
+    <script src="../js/jquery.blockUI.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            reloadUsers();
+
+            $('#btnNewUser').on('click', function(){
+                displayDetailsForm(-1);
+            });
+
+            $('#btnSaveUser').on('click', function(){
+                var loadedId = Number($('#hdnUserId').val());
+                if(validateForm()){
+                    var my_url;
+                    if(0 < loadedId)
+                        my_url = "http://localhost:8080/api/updateUser";
+                    else
+                        my_url = "http://localhost:8080/api/registerUser";
+
+                    var my_data = {
+                        id: $('#txtUserId').val(),
+                        username: $('#txtUsername').val(),
+                        firstname: $('#txtFirstname').val(),
+                        lastname: $('#txtLastname').val(),
+                        email: $('#txtEmail').val(),
+                        contactNo: $('#txtContact').val()
+                    };
+
+                    //console.log(JSON.stringify(my_data));
+
+                    $.ajax({
+                        method: "POST",
+                        url: my_url,
+                        data: JSON.stringify(my_data),
+                        headers: {
+                            'content-type': "application/json",
+                            'cache-control': "no-cache"
+                        },
+                    })
+                    .done(function( msg ) {
+                       bootbox.alert("POST Success: " + msg);
+                       $('input[type="text"], input[type="email"]').val("");
+                       $.unblockUI(); 
+                       reloadUsers();
+                    });
+                }
+                else {
+                    bootbox.alert('Please fill up all the fields!');
+                }
+            });
+
+            $('#btnClearForm').on('click', function(){
+                $('input[type="text"], input[type="email"], input[type="hidden"]').val("");
+                $.unblockUI(); 
+                return false;
+            });
+        });
+
+        var reloadUsers = function(){
+            var my_url = "http://localhost:8080/api/listUsers?callback=?";
+            $.getJSON(my_url, function(json) {
+                $('table#tblUsers tbody').empty();
+                $.each(json, function(idx, doc) {
+                    $('table#tblUsers tbody').append("<tr><td>" + doc.id + "</td><td>" + doc.username + "</td><td>" + doc.firstname + "</td><td>" + doc.lastname + "</td><td>" + doc.email + "</td><td>" + (doc.contactNo ? doc.contactNo : 'N/A') + "</td><td><a href='javascript:void(0);' onclick='displayDetailsForm(" + doc.id + ")'><i class='fa fa-pencil-square-o fa-lg' aria-hidden='true'></i></a>&nbsp;<a href='javascript:void(0);' onclick='removeRecord(" + doc.id + ")'><i class='fa fa-trash fa-lg' aria-hidden='true'></i></a></td></tr>");
+                });
+            });
+        };
+
+        var removeRecord = function(id){
+            var message = "This will be permanently removed. Do you want to proceed?";
+            bootbox.confirm(message, function(){
+                var my_url = "http://localhost:8080/api/removeUser?userId="+id;
+                var my_data = {userId:id};
+                $.post(my_url, function(msg){
+                    bootbox.alert(msg);
+                    reloadUsers();
+                });
+            });
+        };
+
+        var validateForm = function(){
+            var isValid = 
+              '' != $('#txtUserId').val()    && 
+              '' != $('#txtUsername').val()  && 
+              '' != $('#txtFirstname').val() && 
+              '' != $('#txtLastname').val()  && 
+              '' != $('#txtEmail').val();
+            return isValid;
+        }
+
+        var displayDetailsForm = function(id){
+          if(0 < id){
+            var my_url = "http://localhost:8080/api/getUser?userId=" + id;// + "&callback=?";
+            $.getJSON(my_url, function(json) {
+                if(json){
+                  $('#hdnUserId').val(json.id)
+                  $('#txtUserId').val(json.id);
+                  $('#txtUsername').val(json.username);
+                  $('#txtFirstname').val(json.firstname);
+                  $('#txtLastname').val(json.lastname);
+                  $('#txtEmail').val(json.email);
+                  $('#txtContact').val(json.contactNo);
+                }
+            });
+            $('#txtUserId').prop("readonly", true);
+          }
+          else
+            $('#txtUserId').prop("readonly", false);
+
+          $.blockUI({
+              message: $('#divUserDetails'),
+              css: {
+                top: 75,
+                width: 500
+              }
+          });
+        }
+    </script>
+  </body>
+
+</html>
