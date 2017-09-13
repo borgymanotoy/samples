@@ -85,7 +85,13 @@ public class SBRestController {
 
     @RequestMapping(value = "/listUsers", method = RequestMethod.GET)
     public ResponseEntity<?> listUsers(){
-        List<User> users = this.userRepository.listUsers();
+        List<User> users = this.userRepository.listUsers(null);
+        return new ResponseEntity<Object>(users, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/searchUsers", method = RequestMethod.GET)
+    public ResponseEntity<?> searchUsers(@RequestParam(value = "searchKey") String searchKey){
+        List<User> users = this.userRepository.listUsers(searchKey);
         return new ResponseEntity<Object>(users, HttpStatus.OK);
     }
 }

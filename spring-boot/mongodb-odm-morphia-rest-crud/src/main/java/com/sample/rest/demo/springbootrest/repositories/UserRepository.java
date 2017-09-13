@@ -15,6 +15,6 @@ public interface UserRepository {
     UpdateResults updateUser(User user, UpdateOperations<User> operations);
     WriteResult deleteUser(User user);
     UpdateOperations<User> createOperations();
-    List<User> listUsers();
+    List<User> listUsers(String searchKey);
 
 }

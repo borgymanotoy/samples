@@ -2,6 +2,7 @@ package com.sample.rest.demo.springbootrest.repositories;
 
 import com.mongodb.WriteResult;
 import com.sample.rest.demo.springbootrest.models.User;
+import org.bson.Document;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.query.UpdateOperations;
@@ -43,8 +44,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> listUsers() {
-        return datastore.find(User.class).order("username").asList();
+    public List<User> listUsers(String searchKey) {
+        if(null!=searchKey && 0 < searchKey.trim().length())
+            return datastore.find(User.class).filter("$text", new Document("$search", searchKey)).order("username").asList();
+        else
+            return datastore.find(User.class).order("username").asList();
     }
 
 }
