@@ -83,13 +83,11 @@ consumeRestApiApp.controller("consumeRestApiController",
                 );
         };
 
-        $scope.removeUser = function(username){
-            console.log(username);
-            if(username){
-              $http.post('http://localhost:8080/api/removeUser?username=' + username)
+        $scope.removeUser = function(){
+            if($scope.selectedUser.username){
+              $http.post('http://localhost:8080/api/removeUser?username=' + $scope.selectedUser.username)
                   .then(
                       function successCallback(obj){
-                          console.log(obj);
                           $scope.message = obj.data.message;
                           $scope.selectedUser = {};
                           $scope.listUsers();
