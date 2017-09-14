@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="phonebookApp">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Contacts - A Simple Phonebook NodeJS Application</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="css/bootstrap.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="css/phonebook.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+        <link href="favicon.ico" rel="icon" type="image/x-icon">
+
+    </head>
+    <body ng-controller="phonebookController">
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navigation-panel container">
+                <div class="navbar-header">
+                    <a class="navbar-brand text-capitalize" href="#"><p class="header-title">Contacts Bank</p></a>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse" title="Search Contact">
+                    <div class="input-group custom-search-form">
+                        <input type="text" class="form-control" placeholder="Search" ng-model="searchKey">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-search" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+
+
+        <div class="phonebook-list container">
+            <div class="row alert alert-success text-center" ng-if="message">
+                <a href="#" class="close" aria-label="close" ng-click="clearMessage()">&times;</a>
+                <strong>{{message}}</strong>
+            </div>
+            <div class="row text-left">
+                <ul class="list-group">
+                    <li class="list-group-item text-left" ng-repeat="user in contacts | filter: searchKey" data-toggle="modal" data-target="#divModalUpdateContact" ng-click="displayContactDetails(user._id)">
+                        <span class="profile-header-img">
+                            <img class="img-circle" src="images/default_avatar.jpg" height="40" width="40" />
+                        </span>
+                        <span class="contact-name">{{user.details.firstName + " " + user.details.lastName}}</span>
+                        <span class="contact-email"><i class="fa fa-envelope" aria-hidden="true"></i>{{user.details.email}}</span>
+                        <span class="contact-numbers" ng-if="user.contacts.mobileNo"><i class="fa fa-mobile" aria-hidden="true"></i>{{user.contacts.mobileNo}}</span>
+                        <span class="contact-numbers" ng-if="user.contacts.homeNo"><i class="fa fa-phone" aria-hidden="true"></i>{{user.contacts.homeNo}}</span>
+                        <span class="contact-numbers" ng-if="user.contacts.workNo"><i class="fa fa-phone-square" aria-hidden="true"></i>{{user.contacts.workNo}}</span>
+                        <span class="contact-numbers" ng-if="user.contacts.telNo"><i class="fa-volume-control-phone" aria-hidden="true"></i>{{user.contacts.telNo}}</span>
+                    </li>
+                </ul>
+            </div>
+
+<!--
+            <hr>
+            <button type="button" class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#divModalAddContact"><i class="fa fa-address-book" aria-hidden="true"></i>New Contact</button>
+-->
+
+        </div>
+
+        <button id="btnAddContact" class="addNewContact" title="Add new contact" data-toggle="modal" data-target="#divModalAddContact"><b>+</b></button>
+
+        <!--
+        Modal Forms for Adding and Updating Contact(s)
+        ==================================================
+        -->
+        <!-- Modal for Add User -->
+        <div class="modal fade" id="divModalAddContact" role="dialog">
+            <div class="vertical-alignment-helper">
+                <div class="modal-dialog vertical-align-center">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-address-book" aria-hidden="true"></i>Create Contact</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
+                                <input class="form-control" type="text" placeholder="Unique ID (username)" ng-model="newContact._id">
+                            </div>
+
+                            <hr>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input class="form-control" type="text" placeholder="First Name" ng-model="newContact.details.firstName">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input class="form-control" type="text" placeholder="Last Name" ng-model="newContact.details.lastName">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                <input class="form-control" type="email" placeholder="Email Address" ng-model="newContact.details.email">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-address-card-o"></i></span>
+                                <textarea class="form-control" placeholder="Home/Office Address" ng-model="newContact.details.address"></textarea>
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-sticky-note-o"></i></span>
+                                <textarea class="form-control" placeholder="Other notes" ng-model="newContact.details.notes"></textarea>
+                            </div>
+
+                            <hr>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                                <input class="form-control" type="tel" placeholder="Mobile Number" ng-model="newContact.contacts.mobileNo">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                <input class="form-control" type="tel" placeholder="Home Number" ng-model="newContact.contacts.homeNo">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
+                                <input class="form-control" type="tel" placeholder="Work Number" ng-model="newContact.contacts.workNo">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-volume-control-phone"></i></span>
+                                <input class="form-control" type="tel" placeholder="Telephone Number" ng-model="newContact.contacts.telNo">
+                            </div>
+
+                            <hr>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-facebook-official"></i></span>
+                                <input class="form-control" type="url" placeholder="Facebook" ng-model="newContact.socials.facebook">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-google-plus-official"></i></span>
+                                <input class="form-control" type="url" placeholder="Google+" ng-model="newContact.socials.googlePlus">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-twitter"></i></span>
+                                <input class="form-control" type="url" placeholder="Twitter" ng-model="newContact.socials.twitter">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-instagram"></i></span>
+                                <input class="form-control" type="url" placeholder="Instagram" ng-model="newContact.socials.instagram">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-skype"></i></span>
+                                <input class="form-control" type="url" placeholder="Skype" ng-model="newContact.socials.skype">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" data-dismiss="modal" ng-click="saveNewContact()"><i class="fa fa-plus-circle" aria-hidden="true"></i>Add Contact</button>
+                            <button type="button" class="btn" data-dismiss="modal"><i class="fa fa-window-close" aria-hidden="true"></i>Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End: Modal For Add User -->
+
+        <!-- Modal for Modal For Update User Details -->
+        <div class="modal fade" id="divModalUpdateContact" role="dialog">
+            <div class="vertical-alignment-helper">
+                <div class="modal-dialog vertical-align-center">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-pencil" aria-hidden="true"></i>Update Contact</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
+                                <input class="form-control" type="text" placeholder="Unique ID (username)" readonly ng-model="selectedContact._id">
+                            </div>
+
+                            <hr>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input class="form-control" type="text" placeholder="First Name" ng-model="selectedContact.details.firstName">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input class="form-control" type="text" placeholder="Last Name" ng-model="selectedContact.details.lastName">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                <input class="form-control" type="email" placeholder="Email Address" ng-model="selectedContact.details.email">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-address-card-o"></i></span>
+                                <textarea class="form-control" placeholder="Home/Office Address" ng-model="selectedContact.details.address"></textarea>
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-sticky-note-o"></i></span>
+                                <textarea class="form-control" placeholder="Other notes" ng-model="selectedContact.details.notes"></textarea>
+                            </div>
+
+                            <hr>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                                <input class="form-control" type="tel" placeholder="Mobile Number" ng-model="selectedContact.contacts.mobileNo">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                <input class="form-control" type="tel" placeholder="Home Number" ng-model="selectedContact.contacts.homeNo">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
+                                <input class="form-control" type="tel" placeholder="Work Number" ng-model="selectedContact.contacts.workNo">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-volume-control-phone"></i></span>
+                                <input class="form-control" type="tel" placeholder="Telephone Number" ng-model="selectedContact.contacts.telNo">
+                            </div>
+
+                            <hr>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-facebook-official"></i></span>
+                                <input class="form-control" type="url" placeholder="Facebook" ng-model="selectedContact.socials.facebook">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-google-plus-official"></i></span>
+                                <input class="form-control" type="url" placeholder="Google+" ng-model="selectedContact.socials.googlePlus">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-twitter"></i></span>
+                                <input class="form-control" type="url" placeholder="Twitter" ng-model="selectedContact.socials.twitter">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-instagram"></i></span>
+                                <input class="form-control" type="url" placeholder="Instagram" ng-model="selectedContact.socials.instagram">
+                            </div>
+
+                            <div class="input-group margin-bottom-sm">
+                                <span class="input-group-addon"><i class="fa fa-skype"></i></span>
+                                <input class="form-control" type="url" placeholder="Skype" ng-model="selectedContact.socials.skype">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" data-dismiss="modal" ng-click="updateContact()" title="Update selected contact information"><i class="fa fa-pencil" aria-hidden="true"></i>Update Contact Details</button>
+                            <button type="submit" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#divRemoveContact" title="Remove selected contact"><i class="fa fa-trash" aria-hidden="true"></i>Remove Contact</button>
+                            <button type="button" class="btn" data-dismiss="modal"><i class="fa fa-window-close" aria-hidden="true"></i>Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End: Modal For Update User Details -->
+
+        <!-- Modal for Delete User -->
+        <div class="modal fade" id="divRemoveContact" role="dialog">
+            <div class="vertical-alignment-helper">
+                <div class="modal-dialog vertical-align-center">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-trash" aria-hidden="true"></i>Remove Contact</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p class="caption-big">Are you sure you want to remove contact ({{selectedContact.details.firstName + " " + selectedContact.details.lastName}}) ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="removeContact()"><i class="fa fa-trash" aria-hidden="true"></i>Yes</button>
+                            <button type="button" class="btn" data-dismiss="modal"><i class="fa fa-window-close" aria-hidden="true"></i>No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End: Modal For Delete User -->
+
+
+
+
+
+        <!--
+        Bootstrap core JavaScript
+        ==================================================
+        -->
+        <script src="js/jquery-1.11.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script src="js/phonebook.js"></script>
+
+    </body>
+</html>
