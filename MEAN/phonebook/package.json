@@ -16,7 +16,7 @@
     "basic"
   ],
   "author": "Borgy Manotoy",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "nodemon": "^1.12.0"
   },
