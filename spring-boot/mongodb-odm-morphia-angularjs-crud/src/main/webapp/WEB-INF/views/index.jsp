@@ -14,10 +14,47 @@
             tr>td:nth-of-type(5), tr>td:nth-of-type(6){
                width: 30px;
             }
+
+            div.navbar-header > a > p.header-title, div > a.nav-item {
+                font-size: 22px;
+                font-weight: bold;
+                color: #eee;
+                padding: 3px;
+            }
+
+            .adjustTopPosition {
+                top: 10px;
+            }
         </style>
     </head>
     <body ng-controller="consumeRestApiController">
-        <div class="container">
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navigation-panel container">
+                <div class="row">
+                    <div class="navbar-header">
+                        <a class="navbar-brand text-capitalize title" href="#"><p class="header-title">Contacts</p></a>
+                    </div>
+                    <div id="navbar" class="collapse navbar-collapse" title="Search Contact">
+                        <div class="input-group custom-search-form" style="width:300px;">
+                            <input type="text" class="form-control adjustTopPosition" placeholder="Search" ng-model="searchKey">
+                            <span class="input-group-btn adjustTopPosition">
+                                <button class="btn btn-default btn-search" type="button">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                        <div class="collapse navbar-collapse navbar-nav pull-right" id="navbarResponsive">
+                            <a href="/logout" class="nav-item">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+
+
+        <div class="container" style="margin-top: 100px;">
             <hr>
             <button type="button" class="btn btn-info btn-lg pull-right" data-toggle="modal" data-target="#addUser">Add New</button>
             <h2>Manage Users</h2>
