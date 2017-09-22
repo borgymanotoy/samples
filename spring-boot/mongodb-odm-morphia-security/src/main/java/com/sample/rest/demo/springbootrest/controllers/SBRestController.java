@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+
 @RestController
 @RequestMapping(value = "/api")
-@CrossOrigin(origins = {"http://localhost:8000", "http://localhost:9000"})
+@CrossOrigin(origins = {"http://localhost:8000", "http://localhost:9000", "https://borgymanotoy.auth0.com/"})
 public class SBRestController {
 
     @Autowired
