@@ -25,10 +25,63 @@
             .adjustTopPosition {
                 top: 10px;
             }
+
+
+
+            .busi-btn{    border-radius: 0px;	color: #003333 !important;	font-size: 18px; font-weight: 400; }
+            .busi-btn:hover{	border-radius: 0px;	color: #ff3c2d !important;	font-size: 18px; font-weight: 400; }
+            .busi-btn-active,.busi-btn-active:hover{	border-radius: 0px;	color: #ff3c2d !important;	font-size: 18px; font-weight: 400; }
+
+
+            .hom_nav_btn_red{  /* sign-up button  */
+                border-radius: 0px;
+                background-color:#ff3333; /* red color */
+                border:0px !important;
+                font-size:18px;
+                font-weight: 400;
+                padding: 7px 30px;
+                margin: 0 -25px;
+            }
+            .hom_nav_btn{
+                border-radius: 0px;
+                color:#003333 !important; /* blue color */
+                font-size:18px;
+                font-weight: 400;
+                padding: 7px 30px;
+            }
+            .navbar-centerr{
+                float:none;
+                margin: 0 auto;
+                display: table;
+                table-layout: fixed;
+            }
+
+            .business-logo-align {
+                float: left;
+                font-size: 18px;
+                line-height: 20px;
+                height: 50px;
+                padding-left: 5px;
+            }
+
+            img.logo { width: 90px; }
+            #searchContainer { width: 500px; }
+            button.navbar-toggle {
+                float: left;
+                margin-left: 10px;
+                margin-right: 0;
+            }
+
+            @media screen and (max-width : 480px) {
+                img.logo { width:48px; }
+                #searchContainer { width: 300px; }
+            }
+
         </style>
     </head>
     <body ng-controller="consumeRestApiController">
 
+<%--
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="navigation-panel container">
                 <div class="row">
@@ -51,10 +104,38 @@
                 </div>
             </div>
         </nav>
+--%>
 
+        <nav class="navbar navbar-default " role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="business-logo-align col-md-10" >
+                    <a href="javascript:void(0);" onclick="windows.location='/home'"><img class="img-responsive logo" src="images/spring-logo.png" alt="logo"/></a>
+                </div>
+            </div>
 
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="col-md-6 col-xs-6 text-center"> <a href="#"><button type="button" class=" btn btn-default hom_nav_btn ">Log in</button></a></li>
+                    <li class="col-md-6 col-xs-6 text-center"><a href="#"><button type="button" class="btn btn-danger hom_nav_btn_red">Sign Up</button></a></li>
+                </ul>
+
+            </div>
+        </nav>
 
         <div class="container" style="margin-top: 100px;">
+            <div id="searchContainer" class="input-group custom-search-form">
+                <input type="text" id="txtUserSearch" class="form-control adjustTopPosition" placeholder="User search" ng-model="searchKey">
+                <span class="input-group-btn adjustTopPosition">
+                    <button class="btn btn-default btn-search" type="button">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </span>
+            </div>
             <hr>
             <button type="button" class="btn btn-info btn-lg pull-right" data-toggle="modal" data-target="#addUser">Add New</button>
             <h2>Manage Users</h2>
