@@ -127,7 +127,7 @@
             </div>
         </nav>
 
-        <div class="container" style="margin-top: 100px;">
+        <div class="container">
             <div id="searchContainer" class="input-group custom-search-form">
                 <input type="text" id="txtUserSearch" class="form-control adjustTopPosition" placeholder="User search" ng-model="searchKey">
                 <span class="input-group-btn adjustTopPosition">
