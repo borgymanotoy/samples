@@ -9,6 +9,7 @@ import org.mongodb.morphia.query.UpdateResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -19,7 +20,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Key<User> saveOrUpdateUser(User user) {
-        return datastore.save(user);
+        if(null!=user && user.validate())
+            return datastore.save(user);
+        else
+            return null;
     }
 
     @Override
@@ -29,7 +33,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public UpdateResults updateUser(User user, UpdateOperations<User> operations) {
-        return datastore.update(user, operations);
+        if(null!=user && user.validate())
+            return datastore.update(user, operations);
+        else
+            return null;
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.sample.rest.demo.springbootrest.repositories;
 
 import com.mongodb.WriteResult;
 import com.sample.rest.demo.springbootrest.models.User;
-import org.bson.Document;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.query.UpdateOperations;
@@ -10,6 +9,7 @@ import org.mongodb.morphia.query.UpdateResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -20,7 +20,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Key<User> saveOrUpdateUser(User user) {
-        return datastore.save(user);
+        if(null!=user && user.validate())
+            return datastore.save(user);
+        else
+            return null;
     }
 
     @Override
@@ -30,7 +33,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public UpdateResults updateUser(User user, UpdateOperations<User> operations) {
-        return datastore.update(user, operations);
+        if(null!=user && user.validate())
+            return datastore.update(user, operations);
+        else
+            return null;
     }
 
     @Override
@@ -44,11 +50,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> listUsers(String searchKey) {
-        if(null!=searchKey && 0 < searchKey.trim().length())
-            return datastore.find(User.class).filter("$text", new Document("$search", searchKey)).order("username").asList();
-        else
-            return datastore.find(User.class).order("username").asList();
+    public List<User> listUsers() {
+        return datastore.find(User.class).order("username").asList();
     }
 
 }

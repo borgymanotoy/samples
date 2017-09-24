@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,15 +33,19 @@ public class SBRestController {
 
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public ResponseEntity<?> addUser(@RequestBody User user) {
-        MessageState msgState = new MessageState("ERROR", "Unable to add user!");
-        if(null!=user){
+        MessageState msgState = new MessageState();
+        if(null!=user && user.validate()){
             user.setLastModifiedDate(new Date());
             this.userRepository.saveOrUpdateUser(user);
             msgState.setCode("OK");
             msgState.setMessage("Successefully added user!");
+            return new ResponseEntity<>(msgState, HttpStatus.OK);
         }
-
-        return new ResponseEntity<>(msgState, HttpStatus.OK);
+        else {
+            msgState.setCode("ERROR");
+            msgState.setMessage("User validation error!");
+            return new ResponseEntity<>(msgState, HttpStatus.PRECONDITION_FAILED);
+        }
     }
 
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)

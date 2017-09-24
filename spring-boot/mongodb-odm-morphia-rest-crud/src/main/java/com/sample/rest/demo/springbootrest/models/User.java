@@ -96,4 +96,11 @@ public class User {
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
+
+    public boolean validate(){
+        if(null!=username && null!=firstName && null!=lastName)
+            return true;
+        else
+            return false;
+    }
 }
