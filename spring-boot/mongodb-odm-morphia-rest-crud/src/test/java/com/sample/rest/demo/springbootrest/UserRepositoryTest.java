@@ -11,7 +11,8 @@ import java.util.List;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 
-public class TestUserRepository extends SpringBootRestApplicationTests {
+
+public class UserRepositoryTest extends SpringBootRestApplicationTests {
 
     @Autowired
     private UserRepository userRepository;
@@ -19,7 +20,7 @@ public class TestUserRepository extends SpringBootRestApplicationTests {
 
     @Test
     public void testListUsers(){
-        List<User> listUsers = this.userRepository.listUsers();
+        List<User> listUsers = this.userRepository.listUsers(null);
         assertNotNull(listUsers);
         assertTrue(0 < listUsers.size());
     }

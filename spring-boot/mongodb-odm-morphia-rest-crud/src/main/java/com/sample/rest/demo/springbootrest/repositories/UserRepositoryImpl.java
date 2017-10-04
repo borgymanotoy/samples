@@ -9,7 +9,6 @@ import org.mongodb.morphia.query.UpdateResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -50,8 +49,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> listUsers() {
+    public List<User> listUsers(String searchKey) {
         return datastore.find(User.class).order("username").asList();
     }
-
 }

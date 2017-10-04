@@ -2,7 +2,6 @@ package com.sample.rest.demo.springbootrest.handlers;
 
 import com.sample.rest.demo.springbootrest.models.error.ApiError;
 import com.sample.rest.demo.springbootrest.models.error.EntityNotFoundException;
-import com.sample.rest.demo.springbootrest.models.error.*;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
