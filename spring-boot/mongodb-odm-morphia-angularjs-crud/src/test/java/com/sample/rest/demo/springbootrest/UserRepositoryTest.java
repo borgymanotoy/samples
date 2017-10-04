@@ -11,7 +11,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 
-public class TestUserRepository extends SpringBootRestApplicationTests {
+public class UserRepositoryTest extends SpringBootRestApplicationTests {
 
     @Autowired
     private UserRepository userRepository;
