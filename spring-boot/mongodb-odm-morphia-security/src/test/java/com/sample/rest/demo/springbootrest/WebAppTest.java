@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class TestWebApp extends SpringBootRestApplicationTests {
+public class WebAppTest extends SpringBootRestApplicationTests {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
