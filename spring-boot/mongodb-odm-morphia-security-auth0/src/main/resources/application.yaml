@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      database: db_mongodb_morphia
+
+# Optional [Add these only if your MongoDB instance is secured]
+#      authentication-database: some-database
+#      username: some-contact
+#      password: secret
