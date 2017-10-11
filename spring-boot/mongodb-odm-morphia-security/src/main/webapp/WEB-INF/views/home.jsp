@@ -12,143 +12,41 @@
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
         <!-- Custom styles for this template -->
         <link href="css/phonebook.css" rel="stylesheet">
+        <link href="css/home.css" rel="stylesheet">
         <link href="css/materialize.css" rel="stylesheet">
         <link href="css/font-awesome.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
         <link href="favicon.ico" rel="icon" type="image/x-icon">
-
-        <style media="screen">
-            tr>td:nth-of-type(5), tr>td:nth-of-type(6){
-               width: 30px;
-            }
-
-            .btn-success {
-                /* color: #fff; */
-                background-color: #5cb85c;
-                border-color: #4cae4c;
-            }
-
-            div>a.nav-item {
-                font-size: 24px;
-                color: #ffffff;
-                text-decoration: none;
-            }
-
-            div.logout {
-                display: block;
-                margin-top: 10px;
-            }
-
-            td.button {
-                width: 70px !important;
-            }
-
-            table.striped > tbody > tr:nth-child(odd) {
-                background-color: #f9f9f9 !important;
-            }
-
-            table.striped > tbody > tr:nth-child(even) {
-                background-color: #f3feff !important;
-            }
-
-            table.highlight > tbody > tr:hover {
-                background-color: #d5eef9 !important;
-                color: #121212;
-            }
-
-            .modal-edit-contact { border-radius: 6px !important; }
-
-            button.btn { margin: 5px !important; padding: 0 15px !important; }
-
-            #addContact.modal {
-                max-height: 55%;
-                width: 70%;
-            }
-            #editContact.modal {
-                max-height: 65%;
-                width: 70%;
-            }
-            #deleteContact.modal {
-                max-height: 24%;
-                width: 30%;
-            }
-
-            .footer {
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                height: 60px;
-                line-height: 60px;
-                background-color: cornflowerblue;
-            }
-
-            .footer > .container {
-                padding-right: 15px;
-                padding-left: 15px;
-            }
-
-            @media only screen and (max-width: 500px) {
-                #navbar { display: none; }
-
-                h2 {
-                    font-size: 2rem;
-                    line-height: 110%;
-                    margin: 1.78rem 0 1.424rem 0;
-                }
-
-                #addContact.modal {
-                    max-height: 55%;
-                    width: 80%;
-                }
-                #editContact.modal {
-                    max-height: 64%;
-                    width: 80%;
-                }
-                #deleteContact.modal {
-                    max-height: 25%;
-                    width: 80%;
-                }
-            }
-
-        </style>
     </head>
     <body ng-controller="consumeRestApiController">
 
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="navigation-panel container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div>
-                            <a class="navbar-brand text-capitalize" href="#"><p class="header-title">Contacts</p></a>
-                        </div>
-                        <%--
-                        <div id="navbar" class="collapse navbar-collapse" title="Search Contact">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search" ng-model="searchKey">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default btn-search" type="button">
-                                        <span class="glyphicon glyphicon-search"></span>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                        --%>
-                    </div>
-                    <div class="col-md-6 logout">
-                        <div class="pull-right" id="navbarResponsive">
-                            <a href="/logout" class="nav-item">Logout</a>
-                        </div>
-                    </div>
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarResponsive" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a id="aBrand" class="navbar-brand text-capitalize" href="#"><img src="images/logo.png" class="logo" alt="logo"><span class="brand-name">Contacts</span></a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item"><a href="/profile" class="nav-link"><span class="glyphicon glyphicon-user medium-icon"></span>Profile</a></li>
+                        <li class="nav-item"><a href="/logout" class="nav-link"><span class="glyphicon glyphicon-log-out medium-icon"></span>Logout</a></li>
+                    </ul>
                 </div>
             </div>
         </nav>
+
 
         <input type="hidden" id="hdnOwner" ng-model="owner" value="${userInfo}" />
 
         <div class="container">
             <hr>
-            <button type="button" class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#addContact">Add New</button>
-            <h2>Manage Contacts (${userInfo})</h2>
+            <button type="button" class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#addContact"><span class="glyphicon glyphicon-plus-sign small-icon"></span>Add New</button>
+            <h2><span class="glyphicon glyphicon-phone-alt big-icon"></span><span>Manage Contacts</span></h2>
             <span class="clearfix"></span>
             <hr>
 
@@ -189,7 +87,7 @@
 
         <footer class="footer">
             <div class="container">
-                <b>Session: </b>&nbsp;<span>${sessionId}</span>
+                <b>Session: </b>&nbsp;<span>${sessionId}</span>&nbsp;<span><b>(${userInfo})</b></span>
             </div>
         </footer>
 
