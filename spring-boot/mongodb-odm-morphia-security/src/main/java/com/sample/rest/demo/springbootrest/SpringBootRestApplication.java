@@ -28,8 +28,4 @@ public class SpringBootRestApplication extends SpringBootServletInitializer {
         SpringApplication.run(SpringBootRestApplication.class, args);
     }
 
-    @Autowired
-    public void authenticationManager(AuthenticationManagerBuilder builder, UserRepository userRepository) throws Exception {
-        builder.userDetailsService(username -> new CustomUserDetails(userRepository.getUser(username)));
-    }
 }

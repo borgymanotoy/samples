@@ -4,9 +4,11 @@ import com.sample.rest.demo.springbootrest.models.User;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -14,6 +16,8 @@ public class UserRepositoryImpl implements UserRepository {
     @Autowired
     private Datastore datastore;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public User getUser(String username) {
@@ -25,8 +29,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean saveOrUpdateUser(User user) {
-        if(null!=user && user.validate())
-            return null!=datastore.save(user);
+        if(null!=user && user.validate()) {
+            String hashedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(hashedPassword);
+            return null != datastore.save(user);
+        }
 
         return false;
     }
@@ -36,7 +43,10 @@ public class UserRepositoryImpl implements UserRepository {
         if(null!=user && user.validate()) {
             User dbUser = this.getUser(user.getUsername());
             if(null!=dbUser){
-                if(null!=user.getPassword()) dbUser.setPassword(user.getPassword());
+                if(null!=user.getPassword()){
+                    String hashedPassword = passwordEncoder.encode(user.getPassword());
+                    dbUser.setPassword(hashedPassword);
+                }
                 if(null!=user.getRoles()) dbUser.setRoles(user.getRoles());
                 return null!=datastore.save(dbUser);
             }

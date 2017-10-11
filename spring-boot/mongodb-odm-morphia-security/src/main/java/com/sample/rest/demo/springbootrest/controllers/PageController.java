@@ -133,9 +133,6 @@ public class PageController {
             System.out.println("-----------------------");
             System.out.println("\n\n");
 
-            List<Role> availableRoles = this.roleService.list();
-            map.addAttribute("availableRoles", availableRoles);
-
             map.addAttribute("username", username);
             map.addAttribute("password", password);
             map.addAttribute("verifyPassword", verifyPassword);
@@ -145,11 +142,21 @@ public class PageController {
             return null;
         }
         else if("OK".equalsIgnoreCase(msgState.getCode())) {
-            if(null == securityService.findLoggedInUsername()) securityService.autologin(username, password);
-            return "redirect:/home";
+            if(null == securityService.findLoggedInUsername()) {
+                if (securityService.autologin(username, password))
+                    return "redirect:/home";
+                else {
+                    map.addAttribute("username", username);
+                    map.addAttribute("password", password);
+                    map.addAttribute("verifyPassword", verifyPassword);
+                    map.addAttribute("hasError", true);
+                    map.addAttribute("statusMessage", "Authentication failed!");
+                    return null;
+                }
+            }
         }
-        else
-            return null;
+
+        return null;
     }
 
     @GetMapping(value = "/home")

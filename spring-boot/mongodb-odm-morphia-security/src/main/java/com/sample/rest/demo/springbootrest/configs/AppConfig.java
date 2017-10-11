@@ -2,11 +2,13 @@ package com.sample.rest.demo.springbootrest.configs;
 
 import com.auth0.AuthenticationController;
 import com.sample.rest.demo.springbootrest.models.CustomUserDetails;
+import com.sample.rest.demo.springbootrest.models.User;
 import com.sample.rest.demo.springbootrest.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
@@ -31,9 +34,13 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SimpleAuthenticationSuccessHandler successHandler;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(s -> new CustomUserDetails(userRepository.getUser(s)));
+        auth.authenticationProvider(authProvider());
     }
 
     @Override
@@ -58,5 +65,14 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
             .logout()
                 .logoutSuccessUrl("/")
                 .permitAll();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authProvider() {
+        UserDetailsService userDetailsService = s -> new CustomUserDetails(userRepository.getUser(s));
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder);
+        return authProvider;
     }
 }
