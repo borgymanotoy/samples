@@ -39,15 +39,6 @@
                 margin-top: 10px;
             }
 
-            p.session {
-                display: block;
-                padding: 10px 20px;
-                background-color: cornflowerblue;
-                width: 500px;
-                margin-top: 2em;
-                margin-left: 15px;
-            }
-
             td.button {
                 width: 70px !important;
             }
@@ -82,6 +73,20 @@
                 width: 30%;
             }
 
+            .footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 60px;
+                line-height: 60px;
+                background-color: cornflowerblue;
+            }
+
+            .footer > .container {
+                padding-right: 15px;
+                padding-left: 15px;
+            }
+
             @media only screen and (max-width: 500px) {
                 #navbar { display: none; }
 
@@ -89,15 +94,6 @@
                     font-size: 2rem;
                     line-height: 110%;
                     margin: 1.78rem 0 1.424rem 0;
-                }
-
-                p.session {
-                    display: block;
-                    padding: 10px 20px;
-                    background-color: cornflowerblue;
-                    width: 400px;
-                    margin-top: 2em;
-                    margin-left: 0.5em;
                 }
 
                 #addContact.modal {
@@ -147,11 +143,6 @@
             </div>
         </nav>
 
-        <p class="session">
-            <b>session:</b>
-            <span>${sessionId}</span>
-        </p>
-
         <input type="hidden" id="hdnOwner" ng-model="owner" value="${userInfo}" />
 
         <div class="container">
@@ -195,6 +186,12 @@
                 </tbody>
             </table>
         </div>
+
+        <footer class="footer">
+            <div class="container">
+                <b>Session: </b>&nbsp;<span>${sessionId}</span>
+            </div>
+        </footer>
 
         <!-- Modal for Add Contact -->
         <div class="modal fade" id="addContact" role="dialog">
