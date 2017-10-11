@@ -108,13 +108,13 @@ i.fa { margin-right: 5px; }
 }
 
 .btn-default, .btn-primary {
-    color: #e4dede;
-    background-color: #1b2a54;
+    color: #e4dede !important;
+    background-color: #1b2a54 !important;
 }
 
 .btn-danger {
-    color: #e4dede;
-    background-color: #e74c3c;
+    color: #e4dede !important;
+    background-color: #e74c3c !important;
 }
 
 

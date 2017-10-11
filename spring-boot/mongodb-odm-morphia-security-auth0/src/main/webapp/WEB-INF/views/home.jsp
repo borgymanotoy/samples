@@ -58,7 +58,7 @@
             </div>
         </nav>--%>
 
-
+        <%--
         <header>
             <nav class="container navbar main-nav navbar-inverse navbar-fixed-top navbar-static-top marginBottom-0" role="navigation">
                 <div class="collapse navbar-collapse" id="navbar-collapse-1">
@@ -96,7 +96,7 @@
                 </div>
             </nav>
         </header>
-
+        --%>
 
 
 

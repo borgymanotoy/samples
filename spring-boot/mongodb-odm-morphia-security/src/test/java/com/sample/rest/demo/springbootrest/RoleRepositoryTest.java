@@ -1,7 +1,7 @@
-package com.example.securitydemo;
+package com.sample.rest.demo.springbootrest;
 
-import com.example.securitydemo.entities.Role;
-import com.example.securitydemo.repositories.RoleRepository;
+import com.sample.rest.demo.springbootrest.models.Role;
+import com.sample.rest.demo.springbootrest.repositories.RoleRepository;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -12,7 +12,7 @@ import java.util.Date;
 import static junit.framework.TestCase.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class RoleRepositoryTest extends SecurityDemoApplicationTests {
+public class RoleRepositoryTest extends SpringBootRestApplicationTests {
 
     @Autowired
     private RoleRepository roleRepository;
@@ -30,157 +30,120 @@ public class RoleRepositoryTest extends SecurityDemoApplicationTests {
 
     @Test
     public void test11AddRole_blank_role(){
-        Role dummyRole = new Role();
+        Role dummyRole = new Role("");
         this.roleRepository.saveOrUpdateRole(dummyRole);
     }
 
     @Test
     public void test12AddRole_only_code(){
-        Role dummyRole = new Role();
-        dummyRole.setCode("DUMMY1");
-        dummyRole.setLastModifiedDate(new Date());
+        Role dummyRole = new Role("DUMMY1");
         this.roleRepository.saveOrUpdateRole(dummyRole);
     }
 
     @Test
-    public void test13AddRole_code_name(){
-        Role dummyRole = new Role();
-        dummyRole.setCode("DUMMY2");
-        dummyRole.setName("Dummy Role 2");
-        dummyRole.setLastModifiedDate(new Date());
+    public void test13AddRole_code_description(){
+        Role dummyRole = new Role("DUMMY2");
+        dummyRole.setDescription("This is just a dummy role for testing.");
         this.roleRepository.saveOrUpdateRole(dummyRole);
     }
 
     @Test
-    public void test14AddRole_code_name_description(){
-        Role dummyRole = new Role();
-        dummyRole.setCode("DUMMY3");
-        dummyRole.setName("Dummy Role 3");
+    public void test14AddRole_code_description_lastmodifieddate(){
+        Role dummyRole = new Role("DUMMY3");
         dummyRole.setDescription("This is just a dummy role for testing.");
         dummyRole.setLastModifiedDate(new Date());
         this.roleRepository.saveOrUpdateRole(dummyRole);
     }
 
     @Test
-    public void test15AddRole_code_name_description_date(){
-        Role dummyRole = new Role();
-        dummyRole.setCode("DUMMY4");
-        dummyRole.setName("Dummy Role 4");
-        dummyRole.setDescription("This is just a dummy role for testing.");
-        dummyRole.setCreateDate(new Date());
-        dummyRole.setLastModifiedDate(new Date());
-        this.roleRepository.saveOrUpdateRole(dummyRole);
-    }
-
-    @Test
-    public void test16GetRole_null_code(){
+    public void test15GetRole_null_code(){
         assertNull(this.roleRepository.getRole(null));
     }
 
     @Test
-    public void test17GetRole_blank_code(){
+    public void test16GetRole_blank_code(){
         assertNull(this.roleRepository.getRole(""));
     }
 
     @Test
-    public void test18GetRole_not_exist_code(){
+    public void test17GetRole_not_exist_code(){
         assertNull(this.roleRepository.getRole("burikat"));
     }
 
     @Test
-    public void test19GetRole_exist_code(){
+    public void test18GetRole_exist_code(){
         assertNotNull(this.roleRepository.getRole("DUMMY1"));
     }
 
     @Test
-    public void test20UpdateRole_null(){
-        Role dummyUpdateRole = null;
-        assertFalse(this.roleRepository.updateRole(dummyUpdateRole));
+    public void test19UpdateRole_null(){
+        assertFalse(this.roleRepository.updateRole(null));
     }
 
     @Test
-    public void test21UpdateRole_blank(){
-        Role dummyUpdateRole = new Role();
-        assertFalse(this.roleRepository.updateRole(dummyUpdateRole));
+    public void test20UpdateRole_blank(){
+        assertFalse(this.roleRepository.updateRole(new Role("")));
     }
 
     @Test
-    public void test22UpdateRole_code(){
-        Role dummyUpdateRole = new Role();
-        dummyUpdateRole.setCode("DUMMY1");
-        assertTrue(this.roleRepository.updateRole(dummyUpdateRole));
+    public void test21UpdateRole_code(){
+        assertTrue(this.roleRepository.updateRole(new Role("DUMMY1")));
     }
 
     @Test
-    public void test23UpdateRole_code_description(){
-        Role dummyUpdateRole = new Role();
-        dummyUpdateRole.setCode("DUMMY2");
+    public void test22UpdateRole_code_description(){
+        Role dummyUpdateRole = new Role("DUMMY2");
         dummyUpdateRole.setDescription("Orayt! This is the update role description.");
         assertTrue(this.roleRepository.updateRole(dummyUpdateRole));
     }
 
     @Test
-    public void test24UpdateRole_code_description_lastmodifieddate(){
-        Role dummyUpdateRole = new Role();
-        dummyUpdateRole.setCode("DUMMY3");
+    public void test23UpdateRole_code_description_lastmodifieddate(){
+        Role dummyUpdateRole = new Role("DUMMY3");
         dummyUpdateRole.setDescription("Orayt! This is the update role description.");
         dummyUpdateRole.setLastModifiedDate(new Date());
         assertTrue(this.roleRepository.updateRole(dummyUpdateRole));
     }
 
     @Test
-    public void test25DeleteRole_null(){
-        Role dummyDeleteRole = null;
-        assertFalse(this.roleRepository.deleteRole(dummyDeleteRole));
+    public void test24DeleteRole_null(){
+        assertFalse(this.roleRepository.deleteRole(null));
     }
 
     @Test
-    public void test26DeleteRole_blank(){
-        Role dummyDeleteRole = new Role();
-        assertFalse(this.roleRepository.deleteRole(dummyDeleteRole));
+    public void test25DeleteRole_blank(){
+        assertFalse(this.roleRepository.deleteRole(new Role("")));
     }
 
     @Test
-    public void test27DeleteRole_code(){
-        Role dummyDeleteRole = new Role();
-        dummyDeleteRole.setCode("DUMMY3");
-        assertTrue(this.roleRepository.deleteRole(dummyDeleteRole));
+    public void test26DeleteRole_code(){
+        assertTrue(this.roleRepository.deleteRole(new Role("DUMMY3")));
     }
 
     @Test
-    public void test28RemoveOtherDummyData(){
+    public void test27RemoveOtherDummyData(){
         assertTrue(this.roleRepository.deleteRole(new Role("DUMMY1")));
         assertTrue(this.roleRepository.deleteRole(new Role("DUMMY2")));
-        assertTrue(this.roleRepository.deleteRole(new Role("DUMMY4")));
     }
 
-/*
+    /*
     @Test
     public void testCreateRoleAdminUserActuator(){
-        Role adminRole = new Role();
-        adminRole.setCode("ADMIN");
-        adminRole.setName("Administrator Role");
+        Role adminRole = new Role("ADMIN");
         adminRole.setDescription("Administrator Role");
-        adminRole.setCreateDate(new Date());
         adminRole.setLastModifiedDate(new Date());
         this.roleRepository.saveOrUpdateRole(adminRole);
 
-        Role actuatorRole = new Role();
-        actuatorRole.setCode("ACTUATOR");
-        actuatorRole.setName("Actuator Role");
+        Role actuatorRole = new Role("ACTUATOR");
         actuatorRole.setDescription("Actuator Role");
-        actuatorRole.setCreateDate(new Date());
         actuatorRole.setLastModifiedDate(new Date());
         this.roleRepository.saveOrUpdateRole(actuatorRole);
 
-        Role userRole = new Role();
-        userRole.setCode("USER");
-        userRole.setName("User Role");
+        Role userRole = new Role("USER");
         userRole.setDescription("User Role");
-        userRole.setCreateDate(new Date());
         userRole.setLastModifiedDate(new Date());
         this.roleRepository.saveOrUpdateRole(userRole);
     }
-*/
+    */
 
 }

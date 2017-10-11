@@ -1,15 +1,11 @@
 package com.sample.rest.demo.springbootrest.repositories;
 
-import com.mongodb.WriteResult;
 import com.sample.rest.demo.springbootrest.models.User;
 import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Key;
-import org.mongodb.morphia.query.UpdateOperations;
-import org.mongodb.morphia.query.UpdateResults;
+import org.mongodb.morphia.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -18,40 +14,54 @@ public class UserRepositoryImpl implements UserRepository {
     @Autowired
     private Datastore datastore;
 
-    @Override
-    public Key<User> saveOrUpdateUser(User user) {
-        if(null!=user && user.validate())
-            return datastore.save(user);
-        else
-            return null;
-    }
 
     @Override
     public User getUser(String username) {
-        return datastore.get(User.class, username);
-    }
-
-    @Override
-    public UpdateResults updateUser(User user, UpdateOperations<User> operations) {
-        if(null!=user && user.validate())
-            return datastore.update(user, operations);
+        if(null!=username && 0 < username.trim().length())
+            return datastore.get(User.class, username);
         else
             return null;
     }
 
     @Override
-    public WriteResult deleteUser(User user) {
-        return datastore.delete(user);
+    public boolean saveOrUpdateUser(User user) {
+        if(null!=user && user.validate())
+            return null!=datastore.save(user);
+
+        return false;
     }
 
     @Override
-    public UpdateOperations<User> createOperations() {
-        return datastore.createUpdateOperations(User.class);
+    public boolean updateUser(User user) {
+        if(null!=user && user.validate()) {
+            User dbUser = this.getUser(user.getUsername());
+            if(null!=dbUser){
+                if(null!=user.getPassword()) dbUser.setPassword(user.getPassword());
+                if(null!=user.getRoles()) dbUser.setRoles(user.getRoles());
+                return null!=datastore.save(dbUser);
+            }
+        }
+        return false;
     }
 
     @Override
-    public List<User> listUsers() {
-        return datastore.find(User.class).order("username").asList();
+    public boolean deleteUser(String username) {
+        if(null!=username && 0 < username.trim().length()) {
+            User dbUser = this.getUser(username);
+            if(null!=dbUser) {
+                System.out.println("[user]: " + dbUser.toString());
+                return null != datastore.delete(dbUser);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public List<User> listUsers(String search) {
+        Query<User> query = datastore.createQuery(User.class);
+        if(null!=search && 0 < search.trim().length()) query.filter("username", search);
+        query.order("username");
+        return query.asList();
     }
 
 }

@@ -5,5 +5,5 @@ spring:
 
 # Optional [Add these only if your MongoDB instance is secured]
 #      authentication-database: some-database
-#      username: some-user
+#      username: some-contact
 #      password: secret

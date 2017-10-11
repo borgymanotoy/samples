@@ -1,56 +1,39 @@
 package com.sample.rest.demo.springbootrest.configs;
 
 import com.auth0.AuthenticationController;
+import com.sample.rest.demo.springbootrest.models.CustomUserDetails;
+import com.sample.rest.demo.springbootrest.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import java.io.UnsupportedEncodingException;
 
-@SuppressWarnings("unused")
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AppConfig extends WebSecurityConfigurerAdapter {
-    /**
-     * This is your auth0 domain (tenant you have created when registering with auth0 - account name)
-     */
-    @Value(value = "${com.auth0.domain}")
-    private String domain;
 
-    /**
-     * This is the client id of your auth0 application (see Settings page on auth0 dashboard)
-     */
-    @Value(value = "${com.auth0.clientId}")
-    private String clientId;
+    @Autowired
+    private UserRepository userRepository;
 
-    /**
-     * This is the client secret of your auth0 application (see Settings page on auth0 dashboard)
-     */
-    @Value(value = "${com.auth0.clientSecret}")
-    private String clientSecret;
+    @Autowired
+    private SimpleAuthenticationSuccessHandler successHandler;
 
-    @Bean
-    public InternalResourceViewResolver viewResolver() {
-        InternalResourceViewResolver viewResolver
-                = new InternalResourceViewResolver();
-        viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix("/WEB-INF/views/");
-        viewResolver.setSuffix(".jsp");
-        return viewResolver;
-    }
-
-    @Bean
-    public AuthenticationController authenticationController() throws UnsupportedEncodingException {
-        return AuthenticationController.newBuilder(domain, clientId, clientSecret)
-                .build();
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(s -> new CustomUserDetails(userRepository.getUser(s)));
     }
 
     @Override
@@ -58,23 +41,22 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http
-                .authorizeRequests()
-                .antMatchers("/callback", "/login").permitAll()
-                .antMatchers("/**").authenticated()
+            .authorizeRequests()
+                .antMatchers("/fonts/**").permitAll()
+                .antMatchers("/css/**").permitAll()
+                .antMatchers("/js/**").permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers("/register").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .logout().permitAll();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
-    }
-
-    public String getDomain() {
-        return domain;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public String getClientSecret() {
-        return clientSecret;
+            .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .successHandler(successHandler)
+                .failureUrl("/login?error=true")
+                .and()
+            .logout()
+                .logoutSuccessUrl("/")
+                .permitAll();
     }
 }

@@ -4,6 +4,7 @@ public class MessageState {
 
     private String code;
     private String message;
+    private String resultObjectId;
 
 
     public MessageState(){}
@@ -27,5 +28,14 @@ public class MessageState {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+
+    public String getResultObjectId() {
+        return resultObjectId;
+    }
+
+    public void setResultObjectId(String resultObjectId) {
+        this.resultObjectId = resultObjectId;
     }
 }

@@ -15,7 +15,19 @@
     text-align: center;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
-.form input {
+
+.form-registration {
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    max-width: 800px;
+    margin: 0 auto 100px;
+    padding: 45px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.form input, .form-registration input {
     font-family: "Roboto", sans-serif;
     outline: 0;
     background: #f2f2f2;
@@ -26,7 +38,7 @@
     box-sizing: border-box;
     font-size: 14px;
 }
-.form button {
+.form input.button, .form-registration input.button {
     font-family: "Roboto", sans-serif;
     text-transform: uppercase;
     outline: 0;
@@ -40,19 +52,20 @@
     transition: all 0.3 ease;
     cursor: pointer;
 }
-.form button:hover,.form button:active,.form button:focus {
+.form button:hover,.form button:active,.form button:focus,
+.form-registration button:hover,.form-registration button:active,.form-registration button:focus {
     background: #2c3e50;
 }
-.form .message {
+.form .message, .form-registration .message {
     margin: 15px 0 0;
     color: #b3b3b3;
     font-size: 12px;
 }
-.form .message a {
+.form .message a, .form-registration .message a {
     color: #2c3e50;
     text-decoration: none;
 }
-.form .register-form {
+.form .register-form, .form-registration .register-form {
     display: none;
 }
 .container {
@@ -97,4 +110,14 @@ body {
     font-family: "Roboto", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+span.error {
+    padding: 10px;
+    width: 92.5%;
+    background-color: bisque;
+    display: block;
+    margin-bottom: 15px;
+    text-align: left;
+    color: darkred;
 }

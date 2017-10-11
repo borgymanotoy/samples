@@ -1,9 +1,9 @@
-package com.example.securitydemo;
+package com.sample.rest.demo.springbootrest;
 
-import com.example.securitydemo.entities.Role;
-import com.example.securitydemo.entities.User;
-import com.example.securitydemo.repositories.RoleRepository;
-import com.example.securitydemo.repositories.UserRepository;
+import com.sample.rest.demo.springbootrest.models.Role;
+import com.sample.rest.demo.springbootrest.models.User;
+import com.sample.rest.demo.springbootrest.repositories.RoleRepository;
+import com.sample.rest.demo.springbootrest.repositories.UserRepository;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -18,7 +18,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertNull;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class UserRepositoryTest extends SecurityDemoApplicationTests {
+public class UserRepositoryTest extends SpringBootRestApplicationTests {
 
     @Autowired
     private RoleRepository roleRepository;
@@ -27,8 +27,18 @@ public class UserRepositoryTest extends SecurityDemoApplicationTests {
     private UserRepository userRepository;
 
     @Test
-    public void test1ListUsers(){
-        assertNotNull(this.userRepository.listUsers());
+    public void test01ListUsers_null(){
+        assertNotNull(this.userRepository.listUsers(null));
+    }
+
+    @Test
+    public void test02ListUsers_blank(){
+        assertNotNull(this.userRepository.listUsers(""));
+    }
+
+    @Test
+    public void test03ListUsers(){
+        assertNotNull(this.userRepository.listUsers("dummyUser"));
     }
 
     @Test
@@ -125,26 +135,24 @@ public class UserRepositoryTest extends SecurityDemoApplicationTests {
 
     @Test
     public void test24RemoveUser_blank_user(){
-        assertFalse(this.userRepository.deleteUser(new User()));
+        assertFalse(this.userRepository.deleteUser(""));
     }
 
     @Test
     public void test25RemoveUser_user_not_existing(){
-        assertFalse(this.userRepository.deleteUser(new User("gardobiskotso")));
+        assertFalse(this.userRepository.deleteUser("gardobiskotso"));
     }
 
     @Test
     public void test26RemoveUser_existing_user(){
-        User user2 = this.userRepository.getUser("dummyUser2");
-        assertNotNull(user2);
-        assertTrue(this.userRepository.deleteUser(user2));
+        assertTrue(this.userRepository.deleteUser("dummyUser2"));
     }
 
 
 
 /*
     @Test
-    public void testCreateAdministratorUser(){
+    public void testCreateAdministrator(){
         List<Role> roles = new ArrayList<>();
         roles.add(this.roleRepository.getRole("ADMIN"));
 
@@ -155,7 +163,7 @@ public class UserRepositoryTest extends SecurityDemoApplicationTests {
     }
 
     @Test
-    public void testCreateAdministratorUser(){
+    public void testCreateAdministratorBorgy(){
         List<Role> roles = new ArrayList<>();
         roles.add(this.roleRepository.getRole("ADMIN"));
         roles.add(this.roleRepository.getRole("ACTUATOR"));
