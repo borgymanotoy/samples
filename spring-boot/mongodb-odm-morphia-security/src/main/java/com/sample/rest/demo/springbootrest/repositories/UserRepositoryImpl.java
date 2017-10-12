@@ -43,11 +43,10 @@ public class UserRepositoryImpl implements UserRepository {
         if(null!=user && user.validate()) {
             User dbUser = this.getUser(user.getUsername());
             if(null!=dbUser){
-                if(null!=user.getPassword()){
-                    String hashedPassword = passwordEncoder.encode(user.getPassword());
-                    dbUser.setPassword(hashedPassword);
-                }
-                if(null!=user.getRoles()) dbUser.setRoles(user.getRoles());
+                if(null!=user.getPassword())
+                    dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
+                if(null!=user.getRoles())
+                    dbUser.setRoles(user.getRoles());
                 return null!=datastore.save(dbUser);
             }
         }

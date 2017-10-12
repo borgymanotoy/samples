@@ -172,4 +172,12 @@ public class PageController {
 
         return "home";
     }
+
+    @GetMapping(value = "/profile")
+    public String profile(Authentication authentication, ModelMap model) {
+        User user = this.userService.findByUsername(authentication.getName());
+        model.addAttribute("userInfo", user);
+        return "profile";
+    }
+
 }

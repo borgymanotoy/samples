@@ -2,6 +2,7 @@ package com.sample.rest.demo.springbootrest.controllers;
 
 import com.sample.rest.demo.springbootrest.models.MessageState;
 import com.sample.rest.demo.springbootrest.models.User;
+import com.sample.rest.demo.springbootrest.models.UserBean;
 import com.sample.rest.demo.springbootrest.services.RoleService;
 import com.sample.rest.demo.springbootrest.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,47 @@ public class UsersRestController {
             return new ResponseEntity<Object>(msgState, HttpStatus.OK);
         else
             return new ResponseEntity<Object>(msgState, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PutMapping(value = "/user")
+    public ResponseEntity<?> updateUser(@RequestBody UserBean userBean){
+        System.out.println("[update-user]: " + userBean.toString());
+
+        boolean correctPassword = this.userService.verifyPassword(userBean.getUsername(), userBean.getPassword());
+
+        MessageState msgState = new MessageState();
+        if(!userBean.validate()){
+            msgState.setCode("ERROR");
+            msgState.setMessage("Please fill-up all the registration fields.");
+            return new ResponseEntity<Object>(msgState, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else if(!userBean.confirmPasswords()){
+            msgState.setCode("ERROR");
+            msgState.setMessage("Passwords does not match!");
+            return new ResponseEntity<Object>(msgState, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else if(!correctPassword){
+            msgState.setCode("ERROR");
+            msgState.setMessage("Incorrect password!");
+            return new ResponseEntity<Object>(msgState, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else {
+            User user = new User(userBean.getUsername());
+            user.setPassword(userBean.getNewPassword());
+            user.getRoles().add(this.roleService.findByCode("USER"));
+
+            boolean success = this.userService.update(user);
+            if(success) {
+                msgState.setCode("OK");
+                msgState.setMessage("Successfully update user details of (" + user.getUsername() + ").");
+                return new ResponseEntity<Object>(msgState, HttpStatus.OK);
+            }
+            else {
+                msgState.setCode("ERROR");
+                msgState.setMessage("Unable to update user details.");
+                return new ResponseEntity<Object>(msgState, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
     }
 
     @DeleteMapping(value = "/user")

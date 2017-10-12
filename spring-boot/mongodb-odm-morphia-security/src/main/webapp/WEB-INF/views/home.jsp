@@ -7,8 +7,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Angular + REST API - CRUD</title>
-
+        <title>Callbook: Home</title>
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
         <!-- Custom styles for this template -->
         <link href="css/phonebook.css" rel="stylesheet">

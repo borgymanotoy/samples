@@ -11,4 +11,5 @@ public interface UserService {
     boolean save(User user);
     boolean update(User user);
     boolean remove(String username);
+    boolean verifyPassword(String username, String currentPassword);
 }

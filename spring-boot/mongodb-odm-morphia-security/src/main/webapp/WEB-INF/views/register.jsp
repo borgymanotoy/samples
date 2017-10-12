@@ -22,9 +22,6 @@
             div.user-details {
                 width: 300px;
             }
-            div.user-roles {
-                width: 300px;
-            }
 
             select {
                 font-family: "Roboto", sans-serif;
