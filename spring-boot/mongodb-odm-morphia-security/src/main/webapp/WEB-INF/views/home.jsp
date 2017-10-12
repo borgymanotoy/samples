@@ -66,9 +66,9 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="contact in contacts">
-                        <td>{{contact.firstName + " " + contact.lastName}}</td>
-                        <td>{{contact.email}}</td>
-                        <td>{{contact.contactNo}}</td>
+                        <td>{{contact.details.firstName + " " + contact.details.lastName}}</td>
+                        <td>{{contact.details.email}}</td>
+                        <td>{{contact.contactNumbers.mobileNo}}</td>
                         <td class="button">
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editContact" ng-click="displayContactDetails(contact.id)">
                                 <span class="glyphicon glyphicon-edit"></span>
@@ -101,19 +101,53 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="txtNewFirtstName">First Name</label>
-                        <input type="text" class="form-control" id="txtNewFirtstName" placeholder="First Name" ng-model="newContact.firstName">
+                        <input type="text" class="form-control" id="txtNewFirtstName" placeholder="First Name" ng-model="newContact.details.firstName">
                     </div>
                     <div class="form-group">
                         <label for="txtNewLastName">Last Name</label>
-                        <input type="text" class="form-control" id="txtNewLastName" placeholder="Last Name" name="lastName" ng-model="newContact.lastName">
+                        <input type="text" class="form-control" id="txtNewLastName" placeholder="Last Name" ng-model="newContact.details.lastName">
                     </div>
                     <div class="form-group">
                         <label for="txtNewEmail">Email Address</label>
-                        <input type="email" class="form-control" id="txtNewEmail" placeholder="Email Address" name="email" ng-model="newContact.email">
+                        <input type="email" class="form-control" id="txtNewEmail" placeholder="Email Address" ng-model="newContact.details.email">
                     </div>
                     <div class="form-group">
-                        <label for="txtNewContactNo">Contact Number</label>
-                        <input type="tel" class="form-control" id="txtNewContactNo" placeholder="Contact Number" name="contactNo" ng-model="newContact.contactNo">
+                        <label for="txtAddress">Address</label>
+                        <textarea id="txtAddress" cols="30" rows="10" ng-model="newContact.details.address"></textarea>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="txtMobileNo">Mobile Number</label>
+                        <input type="tel" class="form-control" id="txtMobileNo" placeholder="Mobile Number" ng-model="newContact.contactNumbers.mobileNo">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtTelephoneNo">Telephone Number</label>
+                        <input type="tel" class="form-control" id="txtTelephoneNo" placeholder="Telephone Number" ng-model="newContact.contactNumbers.telNo">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtHomeTelephoneNo">Home Telephone Number</label>
+                        <input type="tel" class="form-control" id="txtHomeTelephoneNo" placeholder="Home Telephone Number" ng-model="newContact.contactNumbers.homeNo">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtWorkTelephoneNo">Work Telephone Number</label>
+                        <input type="tel" class="form-control" id="txtWorkTelephoneNo" placeholder="Work Telephone Number" ng-model="newContact.contactNumbers.workNo">
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="txtFacebook">Facebook</label>
+                        <input type="tel" class="form-control" id="txtFacebook" placeholder="Facebook account" ng-model="newContact.socials.facebook">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtInstagram">Instagram</label>
+                        <input type="tel" class="form-control" id="txtInstagram" placeholder="Instagram account" ng-model="newContact.socials.instagram">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtTwitter">Twitter</label>
+                        <input type="tel" class="form-control" id="txtTwitter" placeholder="Twitter account" ng-model="newContact.socials.twitter">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtGooglePlus">Google+</label>
+                        <input type="tel" class="form-control" id="txtGooglePlus" placeholder="Google+ account" ng-model="newContact.socials.google">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -138,20 +172,54 @@
                         <input type="text" class="form-control" id="txtUpdateID" placeholder="Contact ID" name="id" ng-model="selectedContact.id" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="txtUpdateFirtstName">First Name</label>
-                        <input type="text" class="form-control" id="txtUpdateFirtstName" placeholder="Enter First Name" name="firstName" ng-model="selectedContact.firstName">
+                        <label for="txtEditFirtstName">First Name</label>
+                        <input type="text" class="form-control" id="txtEditFirtstName" placeholder="First Name" ng-model="selectedContact.details.firstName">
                     </div>
                     <div class="form-group">
-                        <label for="txtUpdateLastName">Last Name</label>
-                        <input type="text" class="form-control" id="txtUpdateLastName" placeholder="Enter Last Name" name="lastName" ng-model="selectedContact.lastName">
+                        <label for="txtEditLastName">Last Name</label>
+                        <input type="text" class="form-control" id="txtEditLastName" placeholder="Last Name" ng-model="selectedContact.details.lastName">
                     </div>
                     <div class="form-group">
-                        <label for="txtUpdateEmail">Email Address</label>
-                        <input type="email" class="form-control" id="txtUpdateEmail" placeholder="Email Address" name="email" ng-model="selectedContact.email">
+                        <label for="txtEditEmail">Email Address</label>
+                        <input type="email" class="form-control" id="txtEditEmail" placeholder="Email Address" ng-model="selectedContact.details.email">
                     </div>
                     <div class="form-group">
-                        <label for="txtUpdateContactNo">Contact Number</label>
-                        <input type="tel" class="form-control" id="txtUpdateContactNo" placeholder="Contact Number" name="contactNo" ng-model="selectedContact.contactNo">
+                        <label for="txtEditAddress">Address</label>
+                        <textarea id="txtEditAddress" cols="30" rows="10" ng-model="selectedContact.details.address"></textarea>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="txtEditMobileNo">Mobile Number</label>
+                        <input type="tel" class="form-control" id="txtEditMobileNo" placeholder="Mobile Number" ng-model="selectedContact.contactNumbers.mobileNo">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEditTelephoneNo">Telephone Number</label>
+                        <input type="tel" class="form-control" id="txtEditTelephoneNo" placeholder="Telephone Number" ng-model="selectedContact.contactNumbers.telNo">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEditHomeTelephoneNo">Home Telephone Number</label>
+                        <input type="tel" class="form-control" id="txtEditHomeTelephoneNo" placeholder="Home Telephone Number" ng-model="selectedContact.contactNumbers.homeNo">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEditWorkTelephoneNo">Work Telephone Number</label>
+                        <input type="tel" class="form-control" id="txtEditWorkTelephoneNo" placeholder="Work Telephone Number" ng-model="selectedContact.contactNumbers.workNo">
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="txtEditFacebook">Facebook</label>
+                        <input type="tel" class="form-control" id="txtEditFacebook" placeholder="Facebook account" ng-model="selectedContact.socials.facebook">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEditInstagram">Instagram</label>
+                        <input type="tel" class="form-control" id="txtEditInstagram" placeholder="Instagram account" ng-model="selectedContact.socials.instagram">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEditTwitter">Twitter</label>
+                        <input type="tel" class="form-control" id="txtEditTwitter" placeholder="Twitter account" ng-model="selectedContact.socials.twitter">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEditGooglePlus">Google+</label>
+                        <input type="tel" class="form-control" id="txtEditGooglePlus" placeholder="Google+ account" ng-model="selectedContact.socials.google">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -171,7 +239,7 @@
                     <h4 class="modal-title">Remove User</h4>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Are you sure you want to delete {{selectedContact.firstName + " " + selectedContact.lastName}}?</strong></p>
+                    <p><strong>Are you sure you want to delete {{selectedContact.details.firstName + " " + selectedContact.details.lastName}}?</strong></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="removeContact(selectedContact.id)">Yes</button>
@@ -185,12 +253,6 @@
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/angular.min.js"></script>
         <script type="text/javascript" src="js/ngContactRestAPI.js"></script>
-
-        <script>
-            $(document).ready(function(){
-
-            });
-        </script>
 
     </body>
 </html>

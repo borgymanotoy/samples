@@ -31,18 +31,8 @@ public class WebAppContactsTest extends SpringBootRestApplicationTests {
     private MockMvc mockMvc;
 
     private static String testObjectId = null;
-    @SuppressWarnings("unused")
-    private String content01 = "{\"firstName\": \"Dummy\",\"lastName\": \"Contact01\",\"email\": \"dummyContact01@pogi.ph\",\"contactNo\": \"(0949) 993-0422\"}";
 
-    @SuppressWarnings("unused")
-    private String content02 = "{}";
-
-    @SuppressWarnings("unused")
-    private String content03 = "{\"firstName\": \"Dummy\"}";
-
-    private String content04 = "{\"firstName\": \"Dummy\",\"lastName\": \"Contact03\"}";
-    private String updateContent = "{\"firstName\": \"Dummy\",\"lastName\": \"Contact03\",\"email\": \"dummyContact03@pogi.ph\",\"contactNo\": \"(0949) 993-0422\"}";
-    private String searchUser = "dummyContact03";
+    private static Gson gson = new Gson();
 
     @Before
     public void setup() {
@@ -59,15 +49,30 @@ public class WebAppContactsTest extends SpringBootRestApplicationTests {
 
     @Test
     public void test11AddContact() throws Exception {
+        Contact.ContactNumbers contactNumbers = new Contact.ContactNumbers("(0949) 993-0422", null, null, null);
+        Contact.Socials socials = new Contact.Socials();
+        socials.setFacebook("http://www.facebook.com/borgymanotoy");
+        socials.setTwitter("http://www.twitter.com/borgymanotoy");
+        Contact contact = new Contact("Borgy", "Manotory");
+        contact.setContactNumbers(contactNumbers);
+        contact.setSocials(socials);
+        contact.setOwner("ejsalipahmad");
+
+        String addContactJson = gson.toJson(contact);
+
+        System.out.println("\n\n[CONTACT]: ");
+        System.out.println(addContactJson);
+        System.out.println("\n");
+
+
         ResultActions resultActions = mockMvc.perform(post("/api/addContact")
-                .content(content04)
+                .content(addContactJson)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andDo(print())
                 .andExpect(status().isOk());
 
         MvcResult result = resultActions.andReturn();
         if(null!=result){
-            Gson gson = new Gson();
             MessageState msgState = gson.fromJson(result.getResponse().getContentAsString(), MessageState.class);
             testObjectId = msgState.getResultObjectId();
             System.out.println("\t[content]: " + testObjectId);
@@ -84,14 +89,16 @@ public class WebAppContactsTest extends SpringBootRestApplicationTests {
 
     @Test
     public void test13UpdateContact() throws Exception {
-        Contact contact = new Contact();
-        contact.setId(new ObjectId(testObjectId));
-        contact.setFirstName("Borgy");
-        contact.setLastName("Manotoy");
-        contact.setContactNo("(0949) 993-0422");
-        contact.setEmail("borgymanotoy@pogi.ph");
+        Contact.ContactNumbers contactNumbers = new Contact.ContactNumbers("(0949) 993-0422", null, "(082) 300-5321", "(082) 300-8088");
+        Contact.Socials socials = new Contact.Socials();
+        socials.setFacebook("http://www.facebook.com/borgymanotoy");
+        socials.setTwitter("http://www.twitter.com/borgymanotoy");
+        socials.setInstagram("http://www.instagram.com/borgymanotoy");
+        Contact contact = new Contact("Borgy", "Manotory");
+        contact.setContactNumbers(contactNumbers);
+        contact.setSocials(socials);
+        contact.setOwner("ejsalipahmad");
 
-        Gson gson = new Gson();
         String updateJson = gson.toJson(contact);
 
         mockMvc.perform(post("/api/updateContact")

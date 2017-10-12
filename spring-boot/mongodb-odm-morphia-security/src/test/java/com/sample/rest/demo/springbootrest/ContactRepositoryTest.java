@@ -32,21 +32,24 @@ public class ContactRepositoryTest extends SpringBootRestApplicationTests {
 
     @Test
     public void test12SaveOrUpdateContact(){
-        Contact contact = new Contact();
-        contact.setFirstName("Dummy");
-        contact.setLastName("Contact");
-        contact.setLastModifiedDate(new Date());
+        Contact.ContactNumbers contactNumbers = new Contact.ContactNumbers("(0949) 993-0422", null, null, null);
+        Contact.Socials socials = new Contact.Socials();
+        socials.setFacebook("http://www.facebook.com/borgymanotoy");
+        socials.setTwitter("http://www.twitter.com/borgymanotoy");
+        Contact contact = new Contact("Borgy", "Manotory");
+        contact.setContactNumbers(contactNumbers);
+        contact.setOwner("ejsalipahmad");
         assertNotNull(this.contactRepository.saveOrUpdateContact(contact));
     }
 
     @Test
     public void test13GetContact(){
-        assertNotNull(this.contactRepository.getContact("Dummy", "Contact"));
+        assertNotNull(this.contactRepository.getContact("Borgy", "Manotory"));
     }
 
     @Test
     public void test14RemoveContact(){
-        Contact dbContact = this.contactRepository.getContact("Dummy", "Contact");
+        Contact dbContact = this.contactRepository.getContact("Borgy", "Manotory");
         assertNotNull(dbContact);
         assertTrue(this.contactRepository.deleteContact(dbContact));
     }

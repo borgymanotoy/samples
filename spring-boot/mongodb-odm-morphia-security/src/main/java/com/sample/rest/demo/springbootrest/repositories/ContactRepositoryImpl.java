@@ -45,8 +45,8 @@ public class ContactRepositoryImpl implements ContactRepository {
         if(null!=firstName && null!=lastName){
             Query<Contact> query = datastore.createQuery(Contact.class);
             query.and(
-                query.criteria("firstName").equal(firstName),
-                query.criteria("lastName").equal(lastName)
+                query.criteria("details.firstName").equal(firstName),
+                query.criteria("details.lastName").equal(lastName)
             );
             return query.get();
         }
@@ -58,10 +58,12 @@ public class ContactRepositoryImpl implements ContactRepository {
         if(null!= contact && contact.validate()) {
             Contact dbContact = getContactById(contact.getId());
             if(null!=dbContact){
-                dbContact.setFirstName(contact.getFirstName());
-                dbContact.setLastName(contact.getLastName());
-                dbContact.setContactNo(contact.getContactNo());
-                dbContact.setEmail(contact.getEmail());
+                if(null!=contact.getDetails() && contact.getDetails().validate())
+                    dbContact.setDetails(contact.getDetails());
+
+                if(null!=contact.getContactNumbers() && contact.getContactNumbers().validate())
+                    dbContact.setContactNumbers(contact.getContactNumbers());
+
                 dbContact.setLastModifiedDate(new Date());
 
                 return extractObjectId(datastore.save(dbContact));
@@ -85,7 +87,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     public List<Contact> listContact(String owner) {
         Query<Contact> query = datastore.createQuery(Contact.class);
         if(null!=owner && 0 < owner.trim().length()) query.filter("owner", owner);
-        query.order("firstName, lastName");
+        query.order("details.firstName, details.lastName");
         return query.asList();
     }
 
