@@ -54,8 +54,7 @@
 
             <!-- Modal for Edit Contact -->
             <div id="editProfile">
-                <h4 class="modal-title">Profile</h4>
-                <div>
+                <div class="col-lg-6">
                     <div class="form-group">
                         <label for="txtUsername">Username</label>
                         <input type="text" class="form-control" id="txtUsername" placeholder="Username" name="username" ng-model="profile.username" readonly>
@@ -72,9 +71,9 @@
                         <label for="txtVerifyPassword">Verify Password</label>
                         <input type="password" class="form-control" id="txtVerifyPassword" placeholder="Confirm new password" name="verifyPassword" ng-model="profile.verifyPassword">
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" ng-click="updateProfile()">Update Details</button>
+                    <div>
+                        <button type="submit" class="btn btn-primary" ng-click="updateProfile()">Update Details</button>
+                    </div>
                 </div>
             </div>
             <!-- End: Modal For Edit Contact -->
