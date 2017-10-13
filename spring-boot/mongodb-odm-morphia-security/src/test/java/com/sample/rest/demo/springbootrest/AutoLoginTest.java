@@ -13,8 +13,8 @@ public class AutoLoginTest extends SpringBootRestApplicationTests {
 
     @Test
     public void test01AutoLogin(){
-        String username = "lmsalipahmad";
-        String password = "letmein123";
+        String username = "borgymanotoy";
+        String password = "pasudlako123";
 
         boolean success = securityService.autologin(username, password);
         System.out.println("[login-success]: " + success);

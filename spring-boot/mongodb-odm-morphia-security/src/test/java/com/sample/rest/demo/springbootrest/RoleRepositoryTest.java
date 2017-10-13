@@ -126,7 +126,6 @@ public class RoleRepositoryTest extends SpringBootRestApplicationTests {
         assertTrue(this.roleRepository.deleteRole(new Role("DUMMY2")));
     }
 
-    /*
     @Test
     public void testCreateRoleAdminUserActuator(){
         Role adminRole = new Role("ADMIN");
@@ -144,6 +143,6 @@ public class RoleRepositoryTest extends SpringBootRestApplicationTests {
         userRole.setLastModifiedDate(new Date());
         this.roleRepository.saveOrUpdateRole(userRole);
     }
-    */
+
 
 }
