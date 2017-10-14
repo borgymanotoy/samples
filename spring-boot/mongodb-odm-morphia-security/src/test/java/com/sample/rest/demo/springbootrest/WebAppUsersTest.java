@@ -71,8 +71,7 @@ public class WebAppUsersTest extends SpringBootRestApplicationTests {
         mockMvc.perform(get("/api/user")
                 .param("un", username))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+                .andExpect(status().isOk());
     }
 
     @Test

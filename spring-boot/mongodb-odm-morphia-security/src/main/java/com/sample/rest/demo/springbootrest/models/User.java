@@ -35,6 +35,14 @@ public class User {
             this.lastModifiedDate = new Date();
         }
     }
+    public User(String username, String password){
+        if(null!=username && 0 < username.trim().length() && null!=password && 0 < password.trim().length()) {
+            this.username = username;
+            this.password = password;
+            this.creationDate = new Date();
+            this.lastModifiedDate = new Date();
+        }
+    }
 
     public String getUsername() {
         return username;
